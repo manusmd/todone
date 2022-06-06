@@ -8,5 +8,5 @@ export async function connectDatabase(url: string) {
 }
 
 export function getToDoCollection() {
-  return client.db().collection("ToDos");
+  return client.db("ToDoDB").collection("ToDos");
 }
