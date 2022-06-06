@@ -3,16 +3,34 @@ import { connectDatabase, getToDoCollection } from "../config/database";
 import dotenv from "dotenv";
 dotenv.config();
 import { ToDo } from "./types";
+import { auth, requiresAuth } from "express-openid-connect";
 
 const port = process.env.PORT || 3000;
 const app = express();
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: process.env.AUTH_SECRET,
+  baseURL: "http://localhost:3000",
+  clientID: "FgOVpqOk94jkXBvagQKikLfGn62GfVcT",
+  issuerBaseURL: "https://dev-fsx9crux.us.auth0.com",
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(auth(config));
 
 if (!process.env.MONGODB_URI) {
   throw new Error("No MongoDB URI dotenv variable");
 }
+
+app.get("/", (req: Express.Request, res) => {
+  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
+});
+
+app.get("/profile", requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
 
 app.get("/todos", async (_req, res) => {
   const collection = getToDoCollection();
