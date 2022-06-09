@@ -1,8 +1,8 @@
 import express from "express";
-import { connectDatabase, getToDoCollection } from "../config/database";
+import { connectDatabase, getToDoCollection } from "./config/database";
 import dotenv from "dotenv";
 dotenv.config();
-import { ToDo } from "./types";
+import { ToDo } from "./server/types";
 import { auth, requiresAuth } from "express-openid-connect";
 
 const port = process.env.PORT || 3000;

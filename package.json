@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-server": "ts-node-dev --project ./tsconfig.json server/index.ts"
+    "start": "ts-node-dev --project ./tsconfig.json ./index.ts"
   },
   "author": "Manuel Schmid",
   "license": "ISC",
