@@ -14,6 +14,9 @@ const config = {
   baseURL: "http://localhost:3000",
   clientID: "FgOVpqOk94jkXBvagQKikLfGn62GfVcT",
   issuerBaseURL: "https://dev-fsx9crux.us.auth0.com",
+  authorizationParams: {
+    scope: "openid profile email",
+  },
 };
 
 app.use(express.json());
@@ -32,37 +35,42 @@ app.get("/profile", requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
 
-app.get("/todos", async (_req, res) => {
+app.get("/todos", requiresAuth(), async (req: Express.Request, res) => {
   const collection = getToDoCollection();
-  const cursor = collection.find({});
-  const allToDos = await cursor.toArray();
-  res.send(allToDos);
+  const user = req.oidc.user;
+  if (user) {
+    const cursor = collection.find({ user: user.email });
+    const allToDos = await cursor.toArray();
+    res.send(allToDos);
+  }
 });
 
-app.post("/todos", async (req, res) => {
-  const checkTodo = (todo: ToDo) => {
-    if (typeof todo.text !== "string") {
-      return "Text is not a string";
-    } else if (typeof todo.status !== "boolean") {
-      return "Status is not a boolean";
-    } else if (typeof todo.user !== "string") {
-      return "User is not a string";
-    } else {
-      return false;
+app.post("/todos", requiresAuth(), async (req, res) => {
+  if (req.oidc.user) {
+    const checkTodo = (todo: ToDo) => {
+      if (typeof todo.text !== "string") {
+        return "Text is not a string";
+      } else if (typeof todo.status !== "boolean") {
+        return "Status is not a boolean";
+      } else {
+        return false;
+      }
+    };
+    try {
+      const todo = req.body;
+      console.dir(checkTodo(todo));
+      if (checkTodo(todo)) {
+        res.status(400).send(checkTodo(todo));
+      } else {
+        const collection = getToDoCollection();
+        await collection.insertOne({ ...todo, user: req.oidc.user.email });
+        res.status(201).send(todo + " inserted");
+      }
+    } catch (err) {
+      res.status(500).send(err);
     }
-  };
-  try {
-    const todo = req.body;
-    console.dir(checkTodo(todo));
-    if (checkTodo(todo)) {
-      res.status(400).send(checkTodo(todo));
-    } else {
-      const collection = getToDoCollection();
-      await collection.insertOne(todo);
-      res.status(201).send(todo + " inserted");
-    }
-  } catch (err) {
-    res.status(500).send(err);
+  } else {
+    res.status(401).send("Unauthorized");
   }
 });
 
