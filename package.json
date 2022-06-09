@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --project ./tsconfig.json ./index.ts",
-    "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w"
+    "start": "node dist/index.js",
+    "server": "ts-node-dev --project ./tsconfig.json ./index.ts",
+    "build": "tsc -p ./tsconfig.json",
+    "postinstall": "npm run build"
   },
   "author": "Manuel Schmid",
   "license": "ISC",
