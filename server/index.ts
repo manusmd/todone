@@ -11,9 +11,9 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: process.env.AUTH_SECRET,
-  baseURL: "http://localhost:3000",
+  baseURL: process.env.API_URL,
   clientID: "FgOVpqOk94jkXBvagQKikLfGn62GfVcT",
-  issuerBaseURL: "https://dev-fsx9crux.us.auth0.com",
+  issuerBaseURL: process.env.AUTH0_URL,
   authorizationParams: {
     scope: "openid profile email",
   },
