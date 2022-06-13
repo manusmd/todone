@@ -9,7 +9,7 @@ import cors from "cors";
 const port = process.env.PORT || 3000;
 const app = express();
 const config = {
-  authRequired: false,
+  authRequired: true,
   auth0Logout: true,
   secret: process.env.AUTH_SECRET,
   baseURL: process.env.API_URL,
