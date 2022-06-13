@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ToDo } from "./server/types";
 import { auth, requiresAuth } from "express-openid-connect";
+import cors from "cors";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -18,6 +19,11 @@ const config = {
     scope: "openid profile email",
   },
 };
+app.use(
+  cors({
+    origin: ["todone.manu-web.de", "http://localhost:3000"],
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
