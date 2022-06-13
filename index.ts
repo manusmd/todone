@@ -21,7 +21,7 @@ const config = {
 };
 app.use(
   cors({
-    origin: ["todone.manu-web.de", "http://localhost:3000"],
+    origin: "*",
   })
 );
 
