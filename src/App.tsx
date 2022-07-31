@@ -1,5 +1,6 @@
 import './App.css';
 import { NhostClient, NhostReactProvider } from '@nhost/react';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const nhost = new NhostClient({
   subdomain: import.meta.env.REACT_APP_NHOST_SUBDOMAIN,
@@ -9,7 +10,9 @@ const nhost = new NhostClient({
 function App() {
   return (
     <NhostReactProvider nhost={nhost}>
-      <h1>Hello World!</h1>
+      <ChakraProvider>
+        <h1>Hello World!</h1>
+      </ChakraProvider>
     </NhostReactProvider>
   );
 }
