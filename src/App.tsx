@@ -1,17 +1,18 @@
 import './App.css';
 import { NhostClient, NhostReactProvider } from '@nhost/react';
 import { ChakraProvider } from '@chakra-ui/react';
+import SignUp from './pages/Signup/SignUp';
 
 const nhost = new NhostClient({
-  subdomain: import.meta.env.REACT_APP_NHOST_SUBDOMAIN,
-  region: import.meta.env.REACT_APP_NHOST_REGION,
+  subdomain: import.meta.env.VITE_NHOST_SUBDOMAIN,
+  region: import.meta.env.VITE_NHOST_REGION,
 });
 
 function App() {
   return (
     <NhostReactProvider nhost={nhost}>
       <ChakraProvider>
-        <h1>Hello World!</h1>
+        <SignUp />
       </ChakraProvider>
     </NhostReactProvider>
   );
