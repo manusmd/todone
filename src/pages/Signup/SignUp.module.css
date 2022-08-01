@@ -21,3 +21,17 @@
 .logo {
   width: 30%;
 }
+
+.link {
+  color: #0094e8;
+  font-weight: 600;
+  transition: 0.5s;
+}
+
+.link:hover {
+  font-weight: 800;
+  background-color: #0094e8;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
