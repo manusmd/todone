@@ -4,3 +4,9 @@ export type LoginUser = {
   email: string;
   password: string;
 };
+
+export type Projects = {
+  id: string;
+  title: string;
+  user_id: string;
+};
