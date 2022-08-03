@@ -4,13 +4,27 @@ import { Box, Button, Heading, HStack, Input, Spinner } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useQuery } from '@apollo/client';
 import { GET_PROJECTS } from '../../utils/queries';
+import { useEffect } from 'react';
+import ProjectListItem from './ProjectListItem/ProjectListItem';
 
 export default function ProjectList() {
-  const { data, loading, error } = useQuery(GET_PROJECTS, {
-    returnPartialData: true,
+  const { data, loading, error, refetch } = useQuery(GET_PROJECTS);
+
+  useEffect(() => {
+    refetch();
   });
-  console.log(data);
-  console.log(error);
+
+  if (loading) {
+    return (
+      <div className={styles.spinner}>
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p>Oops, something went wrong!</p>;
+  }
 
   return (
     <div className={styles.container}>
@@ -35,7 +49,11 @@ export default function ProjectList() {
           <Spinner />
         ) : (
           data?.projects.map((project: Projects, i: number) => (
-            <div key={i}>{project.title}</div>
+            <ProjectListItem
+              key={i}
+              title={project.title}
+              todoCount={project.todos.length}
+            />
           ))
         )}
       </div>
