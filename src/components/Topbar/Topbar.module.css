@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  width: 100vw;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 -5px 8px #000;
+  grid-area: topbar;
+}
+
+.logo {
+  height: 3rem;
+}
+
+.logoWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.menuHeader {
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuList {
+  margin-top: 0.5rem;
+}
