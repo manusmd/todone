@@ -2,17 +2,23 @@ import styles from './ProjectList.module.css';
 import { Projects } from '../../utils/types';
 import { Box, Button, Heading, HStack, Input, Spinner } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { GET_PROJECTS } from '../../utils/queries';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ProjectListItem from './ProjectListItem/ProjectListItem';
 
 export default function ProjectList() {
-  const { data, loading, error, refetch } = useQuery(GET_PROJECTS);
+  const [search, setSearch] = useState('');
+  const [getProjects, { data, loading, error }] = useLazyQuery(GET_PROJECTS);
 
   useEffect(() => {
-    refetch();
-  });
+    getProjects();
+  }, []);
+
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    getProjects({ variables: { title: e.target.value } });
+    console.log({ search, data });
+  };
 
   if (loading) {
     return (
@@ -23,7 +29,8 @@ export default function ProjectList() {
   }
 
   if (error) {
-    return <p>Oops, something went wrong!</p>;
+    console.log(error);
+    return <p>Oops, something went wrong! </p>;
   }
 
   return (
@@ -43,7 +50,7 @@ export default function ProjectList() {
           >
             <AddIcon />
           </Box>
-          <Input placeholder="Search" />
+          <Input placeholder="Search" onChange={onSearch} />
         </HStack>
         {loading ? (
           <Spinner />
@@ -53,6 +60,12 @@ export default function ProjectList() {
               key={i}
               title={project.title}
               todoCount={project.todos.length}
+              onclick={() =>
+                alert(`Navigate to project ${project.title} (TBD)`)
+              }
+              deleteHandler={() =>
+                alert(`Delete project ${project.title} (TBD)`)
+              }
             />
           ))
         )}
