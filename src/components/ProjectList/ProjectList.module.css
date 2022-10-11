@@ -1,0 +1,27 @@
+.container {
+  height: 100%;
+  grid-area: projects;
+  border-right: solid 2px rgba(187 184 184 / 27.9%);
+}
+
+.heading {
+  display: grid;
+  width: 100%;
+  background-color: rgb(239 239 239);
+  height: 2.5rem;
+  align-items: center;
+}
+
+.addButton {
+  color: white;
+}
+
+.searchWrapper {
+  padding: 0.5rem;
+  border-bottom: solid 2px rgba(187 184 184 / 27.9%);
+}
+
+.spinner {
+  display: grid;
+  place-items: center;
+}
